@@ -8,9 +8,9 @@ import './style/style2.css'
 
 // print('hello webpack 5')
 
-// import { sum } from './math'
-// const sumRes = sum(10, 20)
-// console.log('sumRes', sumRes) 
+import { sum } from './math'
+const sumRes = sum(10, 40)
+console.log('sumRes', sumRes) 
 
 // import _ from 'lodash'
 // console.log(_.each)
@@ -48,3 +48,10 @@ console.log('locale', moment().locale())
 console.log('date', moment().format('ll'))
 
 
+// // 增加，开启热更新之后的代码逻辑
+if (module.hot) {
+    module.hot.accept(['./math'], () => {
+        const sumRes = sum(10, 30)
+        console.log('sumRes in hot', sumRes)
+    })
+}

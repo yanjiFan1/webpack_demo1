@@ -55,11 +55,13 @@ filename: "[contentBase:8]"
 性能优化 
 
 
-1. IgnorePlugin 不起作用
+1. IgnorePlugin 忽略文件
 2. 
 
 
+功能
+1. 自动刷新
+watch: true, // 开启监听，默认为false
+// 注意 开启监听之后，webpack-dev-server 会自动开启刷新浏览器
 
-遇到问题了
-
-1. IgnorePlugin 不起作用
+2. 热更新

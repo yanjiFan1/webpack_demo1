@@ -3,17 +3,38 @@ const webpack = require('webpack');
 const webpackCommonConf = require('./webpack.common.js');
 const { merge } = require('webpack-merge');
 const { srcPath, distPath } = require('./path')
+const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 
 module.exports = merge(webpackCommonConf, {
+    // 
+    // watch: true, // 开启监听，默认为false
+    // 注意 开启监听之后，webpack-dev-server 会自动开启刷新浏览器
     mode: 'development',
+    entry: {
+        // index: path.join(srcPath, 'index.js'),
+        index: [
+            'webpack-dev-server/client?http://localhost:8080/',
+            'webpack/hot/dev-server',
+            path.join(srcPath, 'index.js')
+        ],
+        other: path.join(srcPath, 'other.js')
+    },
     plugins: [
         new webpack.DefinePlugin({
             // window.ENV = 'production'
             ENV: JSON.stringify('development')
-        })
+        }),
+
+        new HotModuleReplacementPlugin()
     ],
     module: {
         rules: [
+            {
+                test: /\.js$/,
+                use: ['babel-loader?cacheDirectory'],
+                include: srcPath,
+                // exclude: /node_modules/
+            },
             {
                 test: /\.(png|jpeg|jpg|gif)$/,
                 use: ['file-loader'],
@@ -40,6 +61,8 @@ module.exports = merge(webpackCommonConf, {
         contentBase: distPath, // 根目录
         open: true, // 自动打开浏览器
         compress: true, // 启动gzip压缩
+
+        hot: true,
 
         // 设置代理
         proxy: {
