@@ -33,7 +33,7 @@ module.exports = merge(webpackCommonConf, {
         // 第三，告诉 Webpack 使用了哪些动态链接库
         new DllReferencePlugin({
             // 描述 react 动态链接库的文件内容
-            manifest: require(path.join(distPath, 'react.manifest.json')),
+            manifest: require(path.join(distPath, 'react.mainfest.json')),
         }),
     ],
     module: {

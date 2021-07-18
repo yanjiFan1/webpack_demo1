@@ -1,0 +1,1 @@
+(self.webpackChunkwepback5_demo=self.webpackChunkwepback5_demo||[]).push([[592],{454:(e,c,s)=>{"use strict";s.d(c,{S:()=>k});const k=(e,c)=>(console.log("122"),e+c)}}]);

@@ -8,6 +8,7 @@ const TerserJSPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const HappyPack = require('happypack')
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
+const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin')
 
 const { srcPath, distPath } = require('./path')
 
@@ -17,7 +18,7 @@ module.exports = merge(webpackCommonConf, {
         // filename: 'bundle.[contenthash:8].js', //打包代码时， 加上hash戳,
         filename: '[name].[contenthash:8].js', // name即多入口时 entry的key
         path: distPath,
-        // publicPath: 'http://cdn.abc.com' // 修改所有静态文件url的前缀（如cdn域名），这里暂时用不到
+        // publicPath: 'http://cdn.xxx.com' // 修改所有静态文件url的前缀（如cdn域名），这里暂时用不到
     },
     module: {
         rules: [
@@ -120,7 +121,16 @@ module.exports = merge(webpackCommonConf, {
         //         }
         //     }
         // })
+
+        // 开启 Scope Hosting --- 性能出现问题再用
+        // new ModuleConcatenationPlugin(),
     ],
+
+    // 配合Scope Hosting 使用
+    // resolve: {
+    //     // 针对Npm中的第三方模块优先采用 jsnext:main中指向的Es6模块化语法的文件
+    //     mainFields: ['jsnext:main', 'browser', 'main']
+    // },
 
     optimization: {
         // 压缩 css
