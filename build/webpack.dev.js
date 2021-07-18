@@ -5,6 +5,9 @@ const { merge } = require('webpack-merge');
 const { srcPath, distPath } = require('./path')
 const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 
+// 第一，引入 DllReferencePlugin
+const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
+
 module.exports = merge(webpackCommonConf, {
     // 
     // watch: true, // 开启监听，默认为false
@@ -25,7 +28,13 @@ module.exports = merge(webpackCommonConf, {
             ENV: JSON.stringify('development')
         }),
 
-        new HotModuleReplacementPlugin()
+        new HotModuleReplacementPlugin(),
+
+        // 第三，告诉 Webpack 使用了哪些动态链接库
+        new DllReferencePlugin({
+            // 描述 react 动态链接库的文件内容
+            manifest: require(path.join(distPath, 'react.manifest.json')),
+        }),
     ],
     module: {
         rules: [
@@ -33,7 +42,7 @@ module.exports = merge(webpackCommonConf, {
                 test: /\.js$/,
                 use: ['babel-loader?cacheDirectory'],
                 include: srcPath,
-                // exclude: /node_modules/
+                exclude: /node_modules/
             },
             {
                 test: /\.(png|jpeg|jpg|gif)$/,
